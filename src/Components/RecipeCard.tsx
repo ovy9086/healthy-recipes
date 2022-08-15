@@ -10,7 +10,10 @@ const RecipeCard: FunctionComponent<{ recipe: Recipe }> = ({ recipe }) => {
   return (
     <View style={{ width: RECIPE_CARD_WIDTH }}>
       <View style={styles.shadowContainer}>
-        <Image style={styles.image} source={{ uri: MediaUtils.getImage(recipe) }} />
+        <Image
+          style={styles.image}
+          source={{ uri: MediaUtils.getImage(recipe).withSize(200, 150).build() }}
+        />
       </View>
       <Text style={styles.title}>{recipe.title}</Text>
       <Text style={styles.duration}>{recipe.time.cook + recipe.time.preparation} mins</Text>
@@ -35,6 +38,7 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: 250,
+    backgroundColor: branding.themeColors.gray,
     borderRadius: branding.paddings.padding_16
   }
 });

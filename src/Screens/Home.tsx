@@ -35,10 +35,7 @@ export default function HomeScreen() {
   }, []);
 
   return (
-    <ImageBackground
-      style={{ flex: 1, backgroundColor: 'cyan' }}
-      source={require('../../Assets/Limeade.jpg')}
-    >
+    <ImageBackground style={{ flex: 1 }} source={require('../../Assets/Limeade.jpg')}>
       <Animated.ScrollView
         onScroll={scrollHandler}
         scrollEventThrottle={16}

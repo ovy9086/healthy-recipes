@@ -11,6 +11,7 @@ export type Recipe = {
     cook: number;
   };
   nutrition: { values: { [K in NutritionValues]?: number } };
+  instructionSections: { steps: string[] }[];
 };
 
 type NutritionValues = 'carbs' | 'fat' | 'protein' | 'fiber' | 'calories';

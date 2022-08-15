@@ -1,11 +1,18 @@
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, { FunctionComponent } from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import { RootStackParamsList } from '../../Navigation';
 import { Recipe } from '../../Services/RecipesService';
 import { branding } from '../../styleguide';
 import { PressableCard } from '../PressableCard';
 import RecipeCard, { RECIPE_CARD_WIDTH } from '../RecipeCard';
 
+type HomeScreenNavigationProp = NativeStackNavigationProp<RootStackParamsList, 'Home'>;
+
 export const RecipeSlider: FunctionComponent<{ recipes?: Recipe[] }> = ({ recipes }) => {
+  const navigation = useNavigation<HomeScreenNavigationProp>();
+
   return (
     <View style={styles.contentContainer}>
       <Text style={styles.title}>Try these, selected for you</Text>
@@ -21,7 +28,7 @@ export const RecipeSlider: FunctionComponent<{ recipes?: Recipe[] }> = ({ recipe
             <PressableCard
               style={styles.card}
               key={recipe.id}
-              onPress={() => console.log('GO TO RECIPE DETAILS')}
+              onPress={() => navigation.navigate('Details', { recipe })}
             >
               <RecipeCard recipe={recipe} />
             </PressableCard>
