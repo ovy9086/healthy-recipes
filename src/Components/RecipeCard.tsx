@@ -1,14 +1,15 @@
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet, ViewProps } from 'react-native';
 import React, { FunctionComponent } from 'react';
-import { Recipe } from '../Services/RecipesService';
 import { branding } from '../styleguide';
 import MediaUtils from '../Utils/MediaUtils';
+import { BaseRecipeFragment } from '../generated/graphql';
 
-export const RECIPE_CARD_WIDTH = 200;
-
-const RecipeCard: FunctionComponent<{ recipe: Recipe }> = ({ recipe }) => {
+const RecipeCard: FunctionComponent<ViewProps & { recipe: BaseRecipeFragment }> = ({
+  recipe,
+  style
+}) => {
   return (
-    <View style={{ width: RECIPE_CARD_WIDTH }}>
+    <View style={style}>
       <View style={styles.shadowContainer}>
         <Image
           style={styles.image}
@@ -21,11 +22,23 @@ const RecipeCard: FunctionComponent<{ recipe: Recipe }> = ({ recipe }) => {
   );
 };
 
+export const RecipeCardPlaceholder: FunctionComponent<ViewProps> = ({ style }) => {
+  return (
+    <View style={style}>
+      <View style={styles.shadowContainer}>
+        <View style={styles.image} />
+      </View>
+      <Text style={[styles.title, styles.textPlaceholder]}> </Text>
+      <Text style={[styles.duration, styles.textPlaceholder]}> </Text>
+    </View>
+  );
+};
+
 export default RecipeCard;
 
 const styles = StyleSheet.create({
   shadowContainer: {
-    width: RECIPE_CARD_WIDTH,
+    width: '100%',
     marginTop: branding.paddings.padding_8,
     ...branding.shadowCard
   },
@@ -33,6 +46,7 @@ const styles = StyleSheet.create({
     marginTop: branding.paddings.padding_8
   },
   duration: {
+    marginTop: 4,
     ...branding.body.body
   },
   image: {
@@ -40,5 +54,8 @@ const styles = StyleSheet.create({
     height: 250,
     backgroundColor: branding.themeColors.gray,
     borderRadius: branding.paddings.padding_16
+  },
+  textPlaceholder: {
+    backgroundColor: branding.themeColors.gray
   }
 });

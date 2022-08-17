@@ -3,11 +3,11 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from '../Screens/Home';
 import DetailsScreen from '../Screens/Details';
-import { Recipe } from '../Services/RecipesService';
+import { BaseRecipeFragment } from '../generated/graphql';
 
 export type RootStackParamsList = {
   Home: undefined;
-  Details: { recipe: Recipe };
+  Details: { recipe: BaseRecipeFragment };
 };
 
 const Stack = createNativeStackNavigator<RootStackParamsList>();

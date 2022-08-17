@@ -3,8 +3,6 @@ import React from 'react';
 import {
   View,
   Text,
-  Image,
-  ViewStyle,
   ImageStyle,
   useWindowDimensions,
   StyleSheet

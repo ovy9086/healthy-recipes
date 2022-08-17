@@ -1,8 +1,8 @@
 import { PixelRatio } from 'react-native';
-import { Recipe } from '../Services/RecipesService';
+import { BaseRecipeFragment } from '../generated/graphql';
 
 class MediaUtils {
-  getImage(recipe: Recipe) {
+  getImage(recipe: BaseRecipeFragment) {
     return new ImageBuilder(recipe.images.hz);
   }
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { ViewStyle, ImageBackground } from 'react-native';
 import Animated, {
   Extrapolate,
@@ -10,28 +10,12 @@ import Animated, {
 import { HomeHeader } from '../Components/Home/HomeHeader';
 import { RecipeCategories } from '../Components/Home/RecipeCategories';
 import { RecipeSlider } from '../Components/Home/RecipeSlider';
-import { Recipe, recipesService } from '../Services/RecipesService';
+import { BaseRecipeFragment, useGetRecipesQuery } from '../generated/graphql';
 import { branding } from '../styleguide';
 
 export default function HomeScreen() {
-  const translationY = useSharedValue(0);
-  const scrollHandler = useAnimatedScrollHandler(event => {
-    translationY.value = event.contentOffset.y;
-  });
-  const headerStyle = useAnimatedStyle<ViewStyle>(() => {
-    return {
-      transform: [
-        {
-          translateY: interpolate(translationY.value, [0, 200], [0, 150], Extrapolate.EXTEND)
-        }
-      ]
-    };
-  });
-
-  const [recipes, setRecipes] = useState<Recipe[] | undefined>(undefined);
-  useEffect(() => {
-    recipesService.getFreeRecipes().then(setRecipes);
-  }, []);
+  const { scrollHandler, headerStyle } = useHeaderAnimation();
+  const { loading, recipes } = useHomeRecipes();
 
   return (
     <ImageBackground style={{ flex: 1 }} source={require('../../Assets/Limeade.jpg')}>
@@ -41,7 +25,7 @@ export default function HomeScreen() {
         contentContainerStyle={{ paddingBottom: branding.paddings.padding_32 }}
       >
         <HomeHeader style={headerStyle} />
-        <RecipeSlider recipes={recipes} />
+        <RecipeSlider recipes={recipes} loading={loading} />
         <RecipeCategories
           categories={[
             'Keto desserts',
@@ -81,4 +65,27 @@ export default function HomeScreen() {
       </Animated.ScrollView>
     </ImageBackground>
   );
+}
+
+function useHeaderAnimation() {
+  const translationY = useSharedValue(0);
+  const scrollHandler = useAnimatedScrollHandler(event => {
+    translationY.value = event.contentOffset.y;
+  });
+  const headerStyle = useAnimatedStyle<ViewStyle>(() => {
+    return {
+      transform: [
+        {
+          translateY: interpolate(translationY.value, [0, 200], [0, 150], Extrapolate.EXTEND)
+        }
+      ]
+    };
+  });
+  return { scrollHandler, headerStyle };
+}
+
+export function useHomeRecipes(): { recipes: BaseRecipeFragment[]; loading: boolean } {
+  const { data, loading } = useGetRecipesQuery({ variables: { pageSize: 8 } });
+  const recipes = (data?.listRecipes.recipes.filter(Boolean) ?? []) as BaseRecipeFragment[];
+  return { recipes, loading };
 }
