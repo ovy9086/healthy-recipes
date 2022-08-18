@@ -9,7 +9,7 @@ const RecipeCard: FunctionComponent<ViewProps & { recipe: BaseRecipeFragment }> 
   style
 }) => {
   return (
-    <View style={style}>
+    <View style={style} testID='recipe-card'>
       <View style={styles.shadowContainer}>
         <Image
           style={styles.image}
@@ -24,7 +24,7 @@ const RecipeCard: FunctionComponent<ViewProps & { recipe: BaseRecipeFragment }> 
 
 export const RecipeCardPlaceholder: FunctionComponent<ViewProps> = ({ style }) => {
   return (
-    <View style={style}>
+    <View style={style} testID='recipe-card-placeholder'>
       <View style={styles.shadowContainer}>
         <View style={styles.image} />
       </View>
